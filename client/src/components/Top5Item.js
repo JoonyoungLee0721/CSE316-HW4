@@ -16,6 +16,7 @@ function Top5Item(props) {
     const [editActive, setEditActive] = useState(false);
     const [draggedTo, setDraggedTo] = useState(0);
 
+
     function handleDragStart(event, targetId) {
         event.dataTransfer.setData("item", targetId);
     }
@@ -47,12 +48,58 @@ function Top5Item(props) {
         // UPDATE THE LIST
         store.addMoveItemTransaction(sourceId, targetId);
     }
+    
+    function handleToggleEdit(event){
+        event.stopPropagation();
+        toggleEdit();
+    }
+    
+    function toggleEdit(event){
+        let newActive = !editActive;
+        if (newActive) {
+            store.setIsItemEditActive();
+        }
+        setEditActive(newActive);
+    }
+let text=""
+    function handleUpdateText(event){
+        text=event.target.value;
+    }
 
     let { index } = props;
+
+    function handleKeyPress(event){
+        if (event.code === "Enter") {
+            store.addUpdateItemTransaction(index,text);
+            toggleEdit();
+        }
+    }
 
     let itemClass = "top5-item";
     if (draggedTo) {
         itemClass = "top5-item-dragged-to";
+    }
+    if (editActive){
+        return(
+                <Box>
+                    <TextField 
+                    sx={{ display: 'flex', p: 1 }}
+                    style={{
+                        fontSize: '48pt',
+                        width: '100%'
+                    }}
+                    onKeyPress={handleKeyPress}
+                    defaultValue={store.currentList.items[index]}
+                    margin="none"
+                    required
+                    fullWidth
+                    onChange={handleUpdateText}
+                    className={"top5-item"}
+                    >
+                    
+                    </TextField>
+                </Box>
+        );
     }
 
     return (
@@ -84,7 +131,8 @@ function Top5Item(props) {
             >
             <Box sx={{ p: 1 }}>
                 <IconButton aria-label='edit'>
-                    <EditIcon style={{fontSize:'48pt'}}  />
+                    <EditIcon style={{fontSize:'48pt'}}
+                        onClick={handleToggleEdit}  />
                 </IconButton>
             </Box>
                 <Box sx={{ p: 1, flexGrow: 1 }}>{props.text}</Box>
