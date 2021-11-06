@@ -168,26 +168,35 @@ function GlobalStoreContextProvider(props) {
         if (response.data.success) {
             let top5List = response.data.top5List;
             top5List.name = newName;
-            async function updateList(top5List) {
-                response = await api.updateTop5ListById(top5List._id, top5List);
-                if (response.data.success) {
-                    async function getListPairs(top5List) {
-                        response = await api.getTop5ListPairs();
-                        if (response.data.success) {
-                            let pairsArray = response.data.idNamePairs;
-                            storeReducer({
-                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
-                                payload: {
-                                    idNamePairs: pairsArray,
-                                    top5List: top5List
+            if(top5List.ownerEmail===auth.user.email){
+                async function updateList(top5List) {
+                    response = await api.updateTop5ListById(top5List._id, top5List);
+                    if (response.data.success) {
+                        async function getListPairs(top5List) {
+                            response = await api.getTop5ListPairs();
+                            if (response.data.success) {
+                                let pairsArray = response.data.idNamePairs;
+                                let listOwned=[];
+                                for(let key in pairsArray){
+                                    let list = pairsArray[key];
+                                    if(list.email===auth.user.email){
+                                        listOwned.push(list);
+                                    }
                                 }
-                            });
+                                storeReducer({
+                                    type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                    payload: {
+                                        idNamePairs: listOwned,
+                                        top5List: top5List
+                                    }
+                                });
+                            }
                         }
+                        getListPairs(top5List);
                     }
-                    getListPairs(top5List);
                 }
+                updateList(top5List);
             }
-            updateList(top5List);
         }
     }
 
@@ -233,9 +242,16 @@ function GlobalStoreContextProvider(props) {
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             let pairsArray = response.data.idNamePairs;
+            let listOwned=[];
+            for(let key in pairsArray){
+                let list = pairsArray[key];
+                if(list.email===auth.user.email){
+                    listOwned.push(list);
+                }
+            }
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                payload: pairsArray
+                payload: listOwned
             });
         }
         else {
@@ -257,13 +273,17 @@ function GlobalStoreContextProvider(props) {
                 payload: top5List
             });
         }
+        let modal = document.getElementById("delete-modal");
+        modal.classList.add("is-visible");
     }
 
     store.deleteList = async function (listToDelete) {
-        let response = await api.deleteTop5ListById(listToDelete._id);
-        if (response.data.success) {
-            store.loadIdNamePairs();
-            history.push("/");
+        if(listToDelete.ownerEmail===auth.user.email){
+            let response = await api.deleteTop5ListById(listToDelete._id);
+            if (response.data.success) {
+                store.loadIdNamePairs();
+                history.push("/");
+            }
         }
     }
 
@@ -299,14 +319,18 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.addMoveItemTransaction = function (start, end) {
-        let transaction = new MoveItem_Transaction(store, start, end);
-        tps.addTransaction(transaction);
+        if(auth.user.email===store.currentList.ownerEmail){
+            let transaction = new MoveItem_Transaction(store, start, end);
+            tps.addTransaction(transaction);
+        }
     }
 
     store.addUpdateItemTransaction = function (index, newText) {
-        let oldText = store.currentList.items[index];
-        let transaction = new UpdateItem_Transaction(store, index, oldText, newText);
-        tps.addTransaction(transaction);
+        if(auth.user.email===store.currentList.ownerEmail){
+            let oldText = store.currentList.items[index];
+            let transaction = new UpdateItem_Transaction(store, index, oldText, newText);
+            tps.addTransaction(transaction);
+        }
     }
 
     store.moveItem = function (start, end) {
@@ -377,7 +401,10 @@ function GlobalStoreContextProvider(props) {
             payload: null
         });
     }
-
+    store.hideDeleteModal = function () {
+        let modal = document.getElementById("delete-modal");
+        modal.classList.remove("is-visible");
+    }
     return (
         <GlobalStoreContext.Provider value={{
             store

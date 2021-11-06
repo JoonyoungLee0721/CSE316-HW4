@@ -13,8 +13,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useContext } from 'react';
-import { GlobalStoreContext } from '../store'
-import AuthContext from '../auth'
+import { GlobalStoreContext } from '../store';
+import AuthContext from '../auth';
+import ErrorModal from './ErrorModal';
+
 
 function Copyright(props) {
   return (
