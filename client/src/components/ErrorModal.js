@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Alert from '@mui/material/Alert';
 
 const style = {
   position: 'absolute',
@@ -16,7 +17,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal() {
+export default function ErrorModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -29,6 +30,7 @@ export default function BasicModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Alert severity="error">Error:</Alert>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Text in a modal
           </Typography>

@@ -273,8 +273,6 @@ function GlobalStoreContextProvider(props) {
                 payload: top5List
             });
         }
-        let modal = document.getElementById("delete-modal");
-        modal.classList.add("is-visible");
     }
 
     store.deleteList = async function (listToDelete) {
@@ -400,10 +398,6 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
             payload: null
         });
-    }
-    store.hideDeleteModal = function () {
-        let modal = document.getElementById("delete-modal");
-        modal.classList.remove("is-visible");
     }
     return (
         <GlobalStoreContext.Provider value={{

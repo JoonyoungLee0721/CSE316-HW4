@@ -60,7 +60,8 @@ function Top5Item(props) {
             store.setIsItemEditActive();
         }
         setEditActive(newActive);
-    }let text=store.currentList.items[index];
+    }
+    let text=store.currentList.items[index];
     function handleUpdateText(event){
         text=event.target.value;
     }

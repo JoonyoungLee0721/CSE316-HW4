@@ -14,10 +14,6 @@ import CloseIcon from '@mui/icons-material/HighlightOff';
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
 
-    let undoStatus=true;
-    let redoStatus=true;
-    let closeStatus=true;
-
     function handleUndo() {
         store.undo();
     }

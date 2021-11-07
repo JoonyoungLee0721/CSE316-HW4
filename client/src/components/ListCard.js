@@ -11,7 +11,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
     This is a card in our list of top 5 lists. It lets select
     a list for editing and it has controls for changing its 
     name or deleting it.
-    
     @author McKilla Gorilla
 */
 function ListCard(props) {
@@ -29,6 +28,7 @@ function ListCard(props) {
 
     function handleToggleEdit(event) {
         event.stopPropagation();
+        setText(idNamePair.name);
         toggleEdit();
     }
 
@@ -51,6 +51,11 @@ function ListCard(props) {
             store.changeListName(id, text);
             toggleEdit();
         }
+    }
+    function handleBlur(event) {
+        let id = event.target.id.substring("list-".length);
+        store.changeListName(id, text);
+        toggleEdit();
     }
     function handleUpdateText(event) {
         setText(event.target.value);
@@ -99,6 +104,7 @@ function ListCard(props) {
                 className='list-card'
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
+                onBlur={handleBlur}
                 defaultValue={idNamePair.name}
                 inputProps={{style: {fontSize: 48}}}
                 InputLabelProps={{style: {fontSize: 24}}}
