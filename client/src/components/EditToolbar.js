@@ -35,21 +35,21 @@ function EditToolbar() {
                 id='undo-button'
                 onClick={handleUndo}
                 variant="contained"
-                disabled={!open||!store.canUndo()}>
+                disabled={!open||(!store.canUndo()||store.isItemEditActive)}>
                     <UndoIcon />
             </Button>
             <Button 
                 id='redo-button'
                 onClick={handleRedo}
                 variant="contained"
-                disabled={!open||!store.canRedo()}>
+                disabled={!open||(!store.canRedo()||store.isItemEditActive)}>
                     <RedoIcon />
             </Button>
             <Button 
                 id='close-button'
                 onClick={handleClose}
                 variant="contained"
-                disabled={!open}>
+                disabled={!open||store.isItemEditActive}>
                     <CloseIcon />
             </Button>
         </div>

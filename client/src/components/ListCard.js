@@ -52,11 +52,6 @@ function ListCard(props) {
             toggleEdit();
         }
     }
-    function handleBlur(event) {
-        let id = event.target.id.substring("list-".length);
-        store.changeListName(id, text);
-        toggleEdit();
-    }
     function handleUpdateText(event) {
         setText(event.target.value);
     }
@@ -67,9 +62,10 @@ function ListCard(props) {
             key={idNamePair._id}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
             button
+            disabled={store.isListNameEditActive}
             onClick={(event) => {
                 handleLoadList(event, idNamePair._id)
-            }
+                }
             }
             style={{
                 fontSize: '48pt',
@@ -78,14 +74,14 @@ function ListCard(props) {
         >
                 <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
                 <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                    <IconButton onClick={handleToggleEdit} aria-label='edit' disabled={store.isListNameEditActive}>
                         <EditIcon style={{fontSize:'48pt'}} />
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 1 }}>
                     <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
+                    }} aria-label='delete' disabled={store.isListNameEditActive}>
                         <DeleteIcon style={{fontSize:'48pt'}} />
                     </IconButton>
                 </Box>
@@ -104,7 +100,6 @@ function ListCard(props) {
                 className='list-card'
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
-                onBlur={handleBlur}
                 defaultValue={idNamePair.name}
                 inputProps={{style: {fontSize: 48}}}
                 InputLabelProps={{style: {fontSize: 24}}}
