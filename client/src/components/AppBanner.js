@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
 import Button from '@mui/material/Button';
-import { GlobalStoreContext } from '../store'
 import EditToolbar from './EditToolbar'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -16,7 +15,6 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 
 export default function AppBanner() {
     const { auth } = useContext(AuthContext);
-    const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
 

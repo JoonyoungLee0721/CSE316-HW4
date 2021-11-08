@@ -33,6 +33,7 @@ export default function RegisterScreen() {
     return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
+                <ErrorModal/>
                 <Box
                     sx={{
                         marginTop: 8,

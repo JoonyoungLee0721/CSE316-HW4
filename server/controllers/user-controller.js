@@ -93,7 +93,7 @@ loginUser = async (req, res) => {
                 .status(404)
                 .json({
                     success: false,
-                    errorMessage: "Enter a valid email"
+                    errorMessage: "Enter a valid email or password"
                 })
         }
 

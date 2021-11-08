@@ -43,13 +43,14 @@ export default function LogInScreen() {
         auth.loginUser({
           email: formData.get('email'),
           password: formData.get('password')
-      }, store);
+        }, store);
     };
 
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
+        <ErrorModal/>
         <Grid
           item
           xs={false}
